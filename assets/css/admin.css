@@ -1,0 +1,506 @@
+.panel {
+    margin: 32px auto;
+    border: 1px solid var(--line);
+    padding: 25px;
+    background: #fff;
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.panel-heading h2 {
+    margin: 0;
+    font-size: 23px;
+}
+
+.panel-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    border-bottom: 1px solid var(--line);
+    padding: 13px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.admin-table th {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.admin-table td {
+    font-size: 14px;
+}
+
+.admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.admin-actions form {
+    margin: 0;
+}
+
+.admin-shell {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 235px minmax(0, 1fr);
+    background: #f7f7f5;
+}
+
+.admin-sidebar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    padding: 27px 18px;
+    background: #171717;
+    color: #fff;
+}
+
+.admin-sidebar .brand {
+    color: #fff;
+    font-size: 20px;
+}
+
+.admin-sidebar > p {
+    margin: 6px 0 30px;
+    color: #aaa;
+    font-size: 12px;
+}
+
+.admin-sidebar nav {
+    display: grid;
+    gap: 5px;
+}
+
+.admin-sidebar nav a,
+.sidebar-store {
+    border-radius: 3px;
+    padding: 11px 12px;
+    color: #ddd;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.admin-sidebar nav a:hover,
+.admin-sidebar nav a.active {
+    background: #333;
+    color: #fff;
+}
+
+.sidebar-store {
+    margin-top: auto;
+    border-top: 1px solid #444;
+}
+
+.admin-main {
+    width: min(1500px, 100%);
+    margin: 0 auto;
+    padding: 34px;
+}
+
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 26px;
+}
+
+.admin-topbar .eyebrow {
+    margin-bottom: 4px;
+    color: var(--muted);
+}
+
+.admin-topbar h1 {
+    margin: 0;
+    font-size: 27px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.stat-card {
+    display: grid;
+    gap: 7px;
+    border: 1px solid var(--line);
+    padding: 19px;
+    background: #fff;
+    text-decoration: none;
+}
+
+.stat-card span,
+.stat-card small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat-card strong {
+    font-size: 30px;
+    line-height: 1.1;
+}
+
+.muted-copy {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.admin-thumb {
+    width: 52px;
+    height: 60px;
+    object-fit: contain;
+    background: var(--soft);
+}
+
+.modal-page {
+    min-height: 100vh;
+    padding: 36px 16px;
+    background: rgba(25, 25, 25, .48);
+}
+
+.modal-card {
+    width: min(700px, 100%);
+    margin: 0 auto;
+    border: 1px solid var(--line);
+    padding: 32px;
+    background: #fff;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, .2);
+}
+
+.modal-card .brand {
+    display: inline-block;
+    margin-bottom: 22px;
+}
+
+.modal-card .eyebrow {
+    color: var(--muted);
+}
+
+.modal-card .page-title {
+    margin-bottom: 20px;
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.modal-grid .form-group {
+    min-width: 0;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 23px;
+}
+
+.product-picker {
+    display: grid;
+    gap: 9px;
+    max-height: 210px;
+    overflow-y: auto;
+    border: 1px solid var(--line);
+    padding: 14px;
+}
+
+.product-picker legend {
+    padding: 0 5px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.product-picker label {
+    font-size: 13px;
+}
+
+.current-images {
+    display: flex;
+    gap: 9px;
+    margin-bottom: 16px;
+}
+
+.current-images img {
+    width: 72px;
+    height: 88px;
+    object-fit: contain;
+    background: var(--soft);
+}
+
+.order-details summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.order-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 250px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.order-line img {
+    width: 42px;
+    height: 50px;
+    object-fit: contain;
+    background: var(--soft);
+}
+
+.order-line span {
+    display: grid;
+    flex: 1;
+    font-size: 12px;
+}
+
+.order-line small {
+    color: var(--muted);
+}
+
+.order-line strong {
+    font-size: 12px;
+}
+
+.status-form {
+    display: grid;
+    gap: 6px;
+    min-width: 130px;
+}
+
+.status-form select {
+    min-height: 34px;
+}
+
+.account-page {
+    padding-top: 30px;
+}
+
+.account-profile-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.account-profile-head h1 {
+    margin: 0;
+}
+
+.account-profile-head p:last-child {
+    margin: 5px 0 0;
+    color: var(--muted);
+}
+
+.account-avatar {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.account-avatar-fallback {
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 700;
+}
+
+.profile-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.profile-fields label {
+    display: grid;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.profile-fields input {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid #d5d2ce;
+    padding: 8px 10px;
+    background: #fff;
+}
+
+.profile-fields input:disabled {
+    background: var(--soft);
+}
+
+.account-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 20px;
+}
+
+.account-links form {
+    margin: 0;
+}
+
+.customer-orders {
+    display: grid;
+    gap: 13px;
+}
+
+.customer-order {
+    border: 1px solid var(--line);
+    padding: 16px;
+}
+
+.customer-order-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.customer-order-head > div {
+    display: grid;
+}
+
+.customer-order-head small,
+.customer-order p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.order-status {
+    border-radius: 999px;
+    padding: 4px 10px;
+    background: var(--soft);
+    font-size: 11px;
+    text-transform: capitalize;
+}
+
+.customer-order-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.customer-order-items > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.customer-order-items img {
+    width: 42px;
+    height: 52px;
+    object-fit: contain;
+    background: var(--soft);
+}
+
+.customer-order-items span {
+    display: grid;
+}
+
+.customer-order-items small {
+    color: var(--muted);
+}
+
+@media (max-width: 600px) {
+    .panel {
+        padding: 16px;
+    }
+
+    .panel-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .panel-links {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 10px 7px;
+        font-size: 12px;
+    }
+
+    .admin-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        position: static;
+        height: auto;
+        padding: 16px;
+    }
+
+    .admin-sidebar > p,
+    .sidebar-store {
+        display: none;
+    }
+
+    .admin-sidebar nav {
+        display: flex;
+        overflow-x: auto;
+        margin-top: 12px;
+    }
+
+    .admin-main {
+        padding: 18px 12px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .modal-card {
+        padding: 22px 18px;
+    }
+
+    .modal-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .profile-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .customer-order-head {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,125 @@
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th,
+.cart-table td {
+    border-bottom: 1px solid var(--line);
+    padding: 13px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.cart-table th {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.cart-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.cart-buttons form {
+    margin: 0;
+}
+
+.total-line {
+    margin-top: 22px;
+    text-align: right;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.cart-product {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cart-product img {
+    width: 58px;
+    height: 68px;
+    object-fit: contain;
+    background: var(--soft);
+}
+
+.quantity-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 150px;
+}
+
+.quantity-form input {
+    width: 58px;
+    min-height: 36px;
+    border: 1px solid var(--line);
+    padding: 5px;
+}
+
+.checkout-form {
+    margin-top: 30px;
+    border: 1px solid var(--line);
+    padding: 22px;
+    background: var(--soft);
+}
+
+.checkout-form h2 {
+    margin: 0 0 14px;
+    font-size: 20px;
+}
+
+.checkout-fields {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.checkout-fields label {
+    display: grid;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.checkout-fields input {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid #d5d2ce;
+    padding: 9px 11px;
+    background: #fff;
+}
+
+.checkout-fields input:invalid:not(:placeholder-shown) {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 1px var(--danger);
+}
+
+@media (max-width: 600px) {
+    .cart-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        padding: 10px 7px;
+        font-size: 12px;
+    }
+
+    .checkout-fields {
+        grid-template-columns: 1fr;
+    }
+}
