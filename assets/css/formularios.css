@@ -12,6 +12,12 @@
     background: #fff;
 }
 
+.form-card .brand-logo {
+    width: auto;
+    max-width: 100%;
+    height: 50px;
+}
+
 .form-card > p {
     color: var(--muted);
 }

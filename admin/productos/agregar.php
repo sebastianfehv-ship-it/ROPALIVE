@@ -70,12 +70,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+$adminBasePath = '../../';
+$adminSection = 'productos';
+$adminTitle = 'Agregar producto';
+$adminExtraCss = true;
+require __DIR__ . '/../layout_inicio.php';
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agregar producto | RopaLive</title><link rel="stylesheet" href="../../assets/css/base.css"><link rel="stylesheet" href="../../assets/css/formularios.css"><link rel="stylesheet" href="../../assets/css/admin.css"></head>
-<body class="modal-page"><main class="modal-card">
-    <a class="brand" href="index.php">ROPALIVE</a><p class="eyebrow">Inventario</p><h1 class="page-title">Agregar producto</h1>
+<section class="panel admin-form-panel">
     <?php if ($errores) { ?><dialog open class="notice-modal notice-error" role="alert"><p><?php echo h(implode(' ', $errores)); ?></p><form method="dialog"><button class="button-small">Entendido</button></form></dialog><?php } ?>
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="token_csrf" value="<?php echo h(token_csrf()); ?>">
@@ -96,4 +97,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group"><label for="imagenes">Imágenes del producto (hasta 3)</label><input id="imagenes" type="file" name="imagenes[]" accept="image/jpeg,image/png,image/webp" multiple required><small>JPG, PNG o WEBP, máximo 5 MB cada imagen.</small></div>
         <div class="modal-actions"><a class="button button-light" href="index.php">Cancelar</a><button type="submit">Guardar producto</button></div>
     </form>
-</main></body></html>
+</section>
+<?php require __DIR__ . '/../layout_fin.php'; ?>

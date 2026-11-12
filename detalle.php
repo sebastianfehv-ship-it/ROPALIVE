@@ -35,7 +35,7 @@ if (!$imagenes) { $imagenes = [$producto['imagen']]; }
 <body>
     <div class="top-note">ENVÍOS A TODO EL PAÍS · NUEVA COLECCIÓN DISPONIBLE</div>
     <header class="site-header">
-        <a class="brand" href="index.php">ROPALIVE</a>
+        <a class="brand" href="index.php"><img class="brand-logo" src="assets/images/LOGO.png" width="120" height="50" alt="RopaLive"></a>
         <nav class="site-nav"><a href="index.php#catalogo">Volver a la colección</a></nav>
         <div class="site-actions"><a class="button button-small" href="carrito.php">Ver carrito</a></div>
     </header>

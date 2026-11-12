@@ -33,8 +33,8 @@ $genero = $_GET['genero'] ?? '';
 $genero = in_array($genero, ['mujer', 'hombre', 'unisex'], true) ? $genero : '';
 $busqueda = is_string($_GET['buscar'] ?? null) ? trim($_GET['buscar']) : '';
 $busqueda = substr($busqueda, 0, 100);
-$marcasDisponibles = $conexion->query("SELECT DISTINCT marca FROM productos WHERE coleccion_id IS NULL AND marca <> '' ORDER BY marca")->fetchAll(PDO::FETCH_COLUMN);
-$categoriasDisponibles = $conexion->query("SELECT DISTINCT categoria FROM productos WHERE coleccion_id IS NULL AND categoria <> '' ORDER BY categoria")->fetchAll(PDO::FETCH_COLUMN);
+$marcasDisponibles = $conexion->query("SELECT DISTINCT marca FROM productos WHERE marca <> '' ORDER BY marca")->fetchAll(PDO::FETCH_COLUMN);
+$categoriasDisponibles = $conexion->query("SELECT DISTINCT categoria FROM productos WHERE categoria <> '' ORDER BY categoria")->fetchAll(PDO::FETCH_COLUMN);
 $marcas = array_values(array_intersect($marcasDisponibles, array_slice(array_filter((array) ($_GET['marcas'] ?? []), 'is_string'), 0, 20)));
 $categorias = array_values(array_intersect($categoriasDisponibles, array_slice(array_filter((array) ($_GET['categorias'] ?? []), 'is_string'), 0, 20)));
 $precioMin = is_numeric($_GET['precio_min'] ?? null) ? max(0, (float) $_GET['precio_min']) : null;
@@ -44,17 +44,17 @@ if ($precioMin !== null && $precioMax !== null && $precioMin > $precioMax) {
 }
 $orden = is_string($_GET['orden'] ?? null) ? $_GET['orden'] : 'recientes';
 $ordenes = [
-    'recientes' => 'id DESC',
-    'precio_asc' => 'precio ASC, id DESC',
-    'precio_desc' => 'precio DESC, id DESC',
+    'recientes' => 'p.id DESC',
+    'precio_asc' => 'p.precio ASC, p.id DESC',
+    'precio_desc' => 'p.precio DESC, p.id DESC',
 ];
 if (!isset($ordenes[$orden])) {
     $orden = 'recientes';
 }
-$condiciones = ['coleccion_id IS NULL'];
+$condiciones = ['1 = 1'];
 $parametros = [];
 if ($genero !== '') {
-    $condiciones[] = 'genero = :genero';
+    $condiciones[] = 'p.genero = :genero';
     $parametros['genero'] = $genero;
 }
 if ($marcas) {
@@ -64,7 +64,7 @@ if ($marcas) {
         $marcadoresMarca[] = ':' . $marcador;
         $parametros[$marcador] = $marca;
     }
-    $condiciones[] = 'marca IN (' . implode(', ', $marcadoresMarca) . ')';
+    $condiciones[] = 'p.marca IN (' . implode(', ', $marcadoresMarca) . ')';
 }
 if ($categorias) {
     $marcadoresCategoria = [];
@@ -73,22 +73,23 @@ if ($categorias) {
         $marcadoresCategoria[] = ':' . $marcador;
         $parametros[$marcador] = $categoria;
     }
-    $condiciones[] = 'categoria IN (' . implode(', ', $marcadoresCategoria) . ')';
+    $condiciones[] = 'p.categoria IN (' . implode(', ', $marcadoresCategoria) . ')';
 }
 if ($busqueda !== '') {
-    $condiciones[] = '(nombre LIKE :buscar_nombre OR descripcion LIKE :buscar_descripcion)';
+    $condiciones[] = '(p.nombre LIKE :buscar_nombre OR p.descripcion LIKE :buscar_descripcion)';
     $parametros['buscar_nombre'] = '%' . $busqueda . '%';
     $parametros['buscar_descripcion'] = '%' . $busqueda . '%';
 }
 if ($precioMin !== null) {
-    $condiciones[] = 'precio >= :precio_min';
+    $condiciones[] = 'p.precio >= :precio_min';
     $parametros['precio_min'] = $precioMin;
 }
 if ($precioMax !== null) {
-    $condiciones[] = 'precio <= :precio_max';
+    $condiciones[] = 'p.precio <= :precio_max';
     $parametros['precio_max'] = $precioMax;
 }
-$sqlProductos = 'SELECT id, nombre, descripcion, marca, categoria, precio, stock, imagen, genero FROM productos WHERE '
+$sqlProductos = 'SELECT p.id, p.coleccion_id, p.nombre, p.descripcion, p.marca, p.categoria, p.precio, p.stock, p.imagen, p.genero, c.nombre AS nombre_coleccion
+    FROM productos p LEFT JOIN colecciones c ON c.id = p.coleccion_id WHERE '
     . implode(' AND ', $condiciones) . ' ORDER BY ' . $ordenes[$orden];
 $stmt = $conexion->prepare($sqlProductos);
 $stmt->execute($parametros);
@@ -128,12 +129,13 @@ $hero = escapar_imagen('hero-bg.jpg');
     <meta name="description" content="Descubre prendas urbanas y esenciales en RopaLive.">
     <title>RopaLive | Ropa para todos los días</title>
     <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/tienda.css">
+    <link rel="stylesheet" href="assets/css/tienda.css?v=<?php echo filemtime(__DIR__ . '/assets/css/tienda.css'); ?>">
+    <link rel="stylesheet" href="assets/css/confirmaciones.css">
 </head>
 <body>
-    <div class="top-note">ENVÍOS A TODO EL PAÍS · NUEVA COLECCIÓN DISPONIBLE</div>
-    <header class="site-header" id="inicio">
-        <a class="brand" href="index.php">ROPALIVE</a>
+    <div class="top-note" id="inicio">ENVÍOS A TODO EL PAÍS · NUEVA COLECCIÓN DISPONIBLE</div>
+    <header class="site-header">
+        <a class="brand" href="index.php"><img class="brand-logo" src="assets/images/LOGO.png" width="120" height="50" alt="RopaLive"></a>
         <nav class="site-nav" aria-label="Navegación principal">
             <a href="#inicio">Inicio</a>
             <a href="colecciones.php">Colección</a>
@@ -153,7 +155,7 @@ $hero = escapar_imagen('hero-bg.jpg');
                             </div>
                             <a href="mi_cuenta.php">Mis pedidos y perfil</a>
                             <a href="carrito.php">Carrito</a>
-                            <form method="post" action="logout.php"><input type="hidden" name="token_csrf" value="<?php echo h(token_csrf()); ?>"><button class="button button-light button-small" type="submit">Cerrar sesión</button></form>
+                            <form method="post" action="logout.php" data-confirm-message="¿Quieres cerrar tu sesión?" data-confirm-title="Cerrar sesión"><input type="hidden" name="token_csrf" value="<?php echo h(token_csrf()); ?>"><button class="button button-light button-small" type="submit">Cerrar sesión</button></form>
                         </div>
                     </details>
                 <?php } ?>
@@ -182,20 +184,6 @@ $hero = escapar_imagen('hero-bg.jpg');
                 <a class="button" href="#catalogo">Ver colección</a>
             </div>
         </section>
-
-        <?php if ($coleccionDestacada) { ?>
-            <section class="page-width featured-collection">
-                <a class="featured-collection-image" href="coleccion.php?id=<?php echo (int) $coleccionDestacada['id']; ?>">
-                    <img src="<?php echo h(escapar_imagen($coleccionDestacada['imagen'])); ?>" alt="">
-                </a>
-                <div class="featured-collection-copy">
-                    <p class="eyebrow">Colecciones</p>
-                    <h2><?php echo h($coleccionDestacada['nombre']); ?></h2>
-                    <p><?php echo h($coleccionDestacada['descripcion'] ?: 'Descubre las prendas de nuestra colección más reciente.'); ?></p>
-                    <a class="button" href="coleccion.php?id=<?php echo (int) $coleccionDestacada['id']; ?>">Explorar colección</a>
-                </div>
-            </section>
-        <?php } ?>
 
         <section class="page-width section" id="catalogo">
             <div class="section-heading">
@@ -289,6 +277,9 @@ $hero = escapar_imagen('hero-bg.jpg');
                                 <p><?php echo h($producto['descripcion'] ?: 'Una prenda pensada para acompañarte.'); ?></p>
                                 <div class="product-price">$<?php echo number_format((float) $producto['precio'], 2); ?></div>
                                 <p class="product-gender"><?php echo h($producto['marca']); ?> · <?php echo h($producto['categoria']); ?> · <?php echo h(ucfirst($producto['genero'])); ?></p>
+                                <?php if (!empty($producto['nombre_coleccion'])) { ?>
+                                    <p class="product-collection">Colección: <a href="coleccion.php?id=<?php echo (int) $producto['coleccion_id']; ?>"><?php echo h($producto['nombre_coleccion']); ?></a></p>
+                                <?php } ?>
                                 <?php if ((int) $producto['stock'] > 0) { ?>
                                     <form method="post">
                                         <input type="hidden" name="token_csrf" value="<?php echo h(token_csrf()); ?>">
@@ -305,24 +296,24 @@ $hero = escapar_imagen('hero-bg.jpg');
                     <?php } ?>
                         </div>
                     <?php } else { ?>
-                        <div class="empty-state"><?php echo $busqueda !== '' || $genero !== '' || $precioMin !== null || $precioMax !== null ? 'No encontramos prendas independientes con esos filtros.' : 'Todavía no hay productos independientes. Explora las colecciones para ver las prendas agrupadas.'; ?><br><a href="colecciones.php">Ver colecciones</a></div>
+                        <div class="empty-state">No encontramos productos con esos filtros.<br><a href="colecciones.php">Ver colecciones</a></div>
                     <?php } ?>
                 </div>
             </div>
         </section>
 
-        <?php if ($colecciones) { ?>
-        <section class="page-width section collection-section">
-            <div class="section-heading"><div><p class="eyebrow">RopaLive / 02</p><h2>Descubre nuestras colecciones</h2><p>Historias y prendas creadas para acompañar cada momento.</p></div><a class="button button-light button-small" href="colecciones.php">Ver colecciones</a></div>
-            <div class="collection-carousel">
-                <?php foreach ($colecciones as $coleccion) { ?>
-                    <article class="collection-card">
-                        <a href="coleccion.php?id=<?php echo (int) $coleccion['id']; ?>"><img src="<?php echo h(escapar_imagen($coleccion['imagen'])); ?>" alt="<?php echo h($coleccion['nombre']); ?>"><span><strong><?php echo h($coleccion['nombre']); ?></strong><small><?php echo (int) $coleccion['productos']; ?> prendas</small></span></a>
-                        <a class="button button-light button-small" href="coleccion.php?id=<?php echo (int) $coleccion['id']; ?>">Ver colección</a>
-                    </article>
-                <?php } ?>
-            </div>
-        </section>
+        <?php if ($coleccionDestacada) { ?>
+            <section class="page-width featured-collection">
+                <a class="featured-collection-image" href="coleccion.php?id=<?php echo (int) $coleccionDestacada['id']; ?>">
+                    <img src="<?php echo h(escapar_imagen($coleccionDestacada['imagen'])); ?>" alt="">
+                </a>
+                <div class="featured-collection-copy">
+                    <p class="eyebrow">Colecciones</p>
+                    <h2><?php echo h($coleccionDestacada['nombre']); ?></h2>
+                    <p><?php echo h($coleccionDestacada['descripcion'] ?: 'Descubre las prendas de nuestra colección más reciente.'); ?></p>
+                    <a class="button" href="coleccion.php?id=<?php echo (int) $coleccionDestacada['id']; ?>">Explorar colección</a>
+                </div>
+            </section>
         <?php } ?>
 
         <section class="page-width section" id="nosotros">
@@ -340,5 +331,6 @@ $hero = escapar_imagen('hero-bg.jpg');
         </section>
     </main>
     <footer class="site-footer"><p>RopaLive · Moda para todos los días</p></footer>
+    <script src="assets/js/confirmaciones.js" defer></script>
 </body>
 </html>

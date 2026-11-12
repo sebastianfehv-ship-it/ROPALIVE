@@ -106,16 +106,22 @@ button:disabled:hover,
     justify-content: space-between;
     gap: 24px;
     border-bottom: 1px solid var(--line);
-    padding: 12px max(24px, calc((100% - 1240px) / 2));
+    padding: 8px max(24px, calc((100% - 1240px) / 2));
     background: rgba(255, 255, 255, .96);
 }
 
 .brand {
+    display: inline-flex;
+    align-items: center;
     color: var(--ink);
-    font-size: 25px;
-    font-weight: 800;
-    letter-spacing: .1em;
     text-decoration: none;
+}
+
+.brand-logo {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: 50px;
 }
 
 .site-nav,
@@ -247,7 +253,7 @@ button:disabled:hover,
     .site-header {
         flex-wrap: wrap;
         gap: 12px;
-        padding: 13px 20px;
+        padding: 8px 20px;
     }
 
     .site-nav {
@@ -261,6 +267,10 @@ button:disabled:hover,
 @media (max-width: 600px) {
     .site-actions {
         gap: 9px;
+    }
+
+    .brand-logo {
+        height: 50px;
     }
 
     .site-actions .button {

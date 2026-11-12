@@ -71,17 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+$adminBasePath = '../../';
+$adminSection = 'colecciones';
+$adminTitle = 'Crear colección';
+$adminExtraCss = true;
+require __DIR__ . '/../layout_inicio.php';
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nueva colección | RopaLive</title>
-    <link rel="stylesheet" href="../../assets/css/base.css"><link rel="stylesheet" href="../../assets/css/formularios.css"><link rel="stylesheet" href="../../assets/css/admin.css">
-</head>
-<body class="modal-page">
-    <main class="modal-card">
-        <a class="brand" href="index.php">ROPALIVE</a><p class="eyebrow">Catálogo</p><h1 class="page-title">Crear colección</h1>
+    <section class="panel admin-form-panel">
         <?php if ($errores) { ?><dialog open class="notice-modal notice-error" role="alert"><p><?php echo h(implode(' ', $errores)); ?></p><form method="dialog"><button class="button-small">Entendido</button></form></dialog><?php } ?>
         <?php if (!$productos) { ?><div class="notice">Primero crea al menos un producto para poder crear una colección.</div><?php } ?>
         <form method="post" enctype="multipart/form-data">
@@ -96,6 +92,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </fieldset>
             <div class="modal-actions"><a class="button button-light" href="index.php">Cancelar</a><button type="submit" <?php echo !$productos ? 'disabled' : ''; ?>>Guardar colección</button></div>
         </form>
-    </main>
-</body>
-</html>
+    </section>
+<?php require __DIR__ . '/../layout_fin.php'; ?>

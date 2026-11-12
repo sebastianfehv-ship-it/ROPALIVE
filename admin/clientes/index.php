@@ -2,26 +2,11 @@
 require_once __DIR__ . '/../../includes/verificar_admin.php';
 
 $clientes = $conexion->query("SELECT id, nombre, email, ciudad FROM usuarios WHERE rol = 'cliente' ORDER BY id DESC")->fetchAll();
+$adminBasePath = '../../';
+$adminSection = 'clientes';
+$adminTitle = 'Clientes';
+require __DIR__ . '/../layout_inicio.php';
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clientes | RopaLive</title>
-    <link rel="stylesheet" href="../../assets/css/base.css">
-    <link rel="stylesheet" href="../../assets/css/admin.css">
-</head>
-<body>
-    <div class="top-note">GESTIÓN DE LA TIENDA</div>
-    <header class="site-header">
-        <a class="brand" href="../../index.php">ROPALIVE</a>
-        <nav class="site-nav">
-            <a href="../index.php">Panel principal</a>
-            <a href="../../index.php">Ver tienda</a>
-        </nav>
-    </header>
-    <main class="page-width">
         <section class="panel">
             <div class="panel-heading">
                 <div>
@@ -45,7 +30,7 @@ $clientes = $conexion->query("SELECT id, nombre, email, ciudad FROM usuarios WHE
                                     <td>
                                         <div class="admin-actions">
                                             <a class="button button-light button-small" href="editar.php?id=<?php echo (int) $cliente['id']; ?>">Editar</a>
-                                            <form method="post" action="eliminar.php" onsubmit="return confirm('¿Eliminar esta cuenta de cliente?');">
+                                            <form method="post" action="eliminar.php" data-confirm-message="¿Quieres eliminar esta cuenta de cliente?" data-confirm-title="Eliminar cliente" data-confirm-danger="true">
                                                 <input type="hidden" name="token_csrf" value="<?php echo h(token_csrf()); ?>">
                                                 <input type="hidden" name="id" value="<?php echo (int) $cliente['id']; ?>">
                                                 <button class="button-danger button-small" type="submit">Eliminar</button>
@@ -61,7 +46,4 @@ $clientes = $conexion->query("SELECT id, nombre, email, ciudad FROM usuarios WHE
                 </table>
             </div>
         </section>
-    </main>
-    <footer class="site-footer"><p>Panel de administración de RopaLive</p></footer>
-</body>
-</html>
+<?php require __DIR__ . '/../layout_fin.php'; ?>

@@ -6,19 +6,11 @@ $colecciones = $conexion->query(
      FROM colecciones c LEFT JOIN productos p ON p.coleccion_id = c.id
      GROUP BY c.id ORDER BY c.id DESC'
 )->fetchAll();
+$adminBasePath = '../../';
+$adminSection = 'colecciones';
+$adminTitle = 'Colecciones';
+require __DIR__ . '/../layout_inicio.php';
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Colecciones | RopaLive</title>
-    <link rel="stylesheet" href="../../assets/css/base.css">
-    <link rel="stylesheet" href="../../assets/css/admin.css">
-</head>
-<body>
-    <header class="site-header"><a class="brand" href="../../index.php">ROPALIVE</a><nav class="site-nav"><a href="../index.php">Panel</a><a href="../../colecciones.php">Ver tienda</a></nav></header>
-    <main class="page-width">
         <section class="panel">
             <div class="panel-heading"><div><p class="eyebrow">Catálogo</p><h1 class="page-title">Colecciones</h1></div><a class="button" href="agregar.php">Crear colección</a></div>
             <p class="muted-copy">Cada colección debe incluir al menos un producto. Los productos también pueden publicarse sin colección.</p>
@@ -27,12 +19,12 @@ $colecciones = $conexion->query(
                 <tbody>
                 <?php if ($colecciones) { foreach ($colecciones as $coleccion) { ?>
                     <tr>
-                        <td><img class="admin-thumb" src="<?php echo h(escapar_imagen($coleccion['imagen'])); ?>" alt=""></td>
+                        <td><img class="admin-thumb" src="<?php echo h('../../' . escapar_imagen($coleccion['imagen'])); ?>?v=<?php echo (int) $coleccion['id']; ?>" alt=""></td>
                         <td><?php echo h($coleccion['nombre']); ?></td>
                         <td><?php echo (int) $coleccion['productos']; ?></td>
                         <td><div class="admin-actions">
                             <a class="button button-light button-small" href="editar.php?id=<?php echo (int) $coleccion['id']; ?>">Editar</a>
-                            <form method="post" action="eliminar.php" onsubmit="return confirm('¿Eliminar esta colección? Los productos quedarán sin colección.');">
+                            <form method="post" action="eliminar.php" data-confirm-message="¿Quieres eliminar esta colección? Los productos quedarán sin colección." data-confirm-title="Eliminar colección" data-confirm-danger="true">
                                 <input type="hidden" name="token_csrf" value="<?php echo h(token_csrf()); ?>">
                                 <input type="hidden" name="id" value="<?php echo (int) $coleccion['id']; ?>">
                                 <button class="button-danger button-small" type="submit">Eliminar</button>
@@ -45,6 +37,4 @@ $colecciones = $conexion->query(
                 </tbody>
             </table></div>
         </section>
-    </main>
-</body>
-</html>
+<?php require __DIR__ . '/../layout_fin.php'; ?>

@@ -68,22 +68,100 @@
     min-height: 100vh;
     grid-template-columns: 235px minmax(0, 1fr);
     background: #f7f7f5;
+    transition: grid-template-columns .2s ease;
 }
 
 .admin-sidebar {
     position: sticky;
     top: 0;
     display: flex;
+    min-width: 0;
     height: 100vh;
     flex-direction: column;
+    overflow: hidden;
     padding: 27px 18px;
     background: #171717;
     color: #fff;
+    transition: padding .2s ease, visibility .2s ease;
+}
+
+.admin-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.sidebar-collapse-button,
+.sidebar-open-button {
+    display: inline-flex;
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+}
+
+.sidebar-collapse-button {
+    color: #ddd;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.sidebar-collapse-button:hover {
+    border-color: #fff;
+    background: #333;
+}
+
+.sidebar-open-button {
+    flex-direction: column;
+    gap: 4px;
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+.sidebar-open-button span {
+    display: block;
+    width: 17px;
+    height: 2px;
+    background: currentColor;
+}
+
+.sidebar-open-button:hover {
+    border-color: var(--accent);
+    background: var(--soft);
+    color: var(--ink);
+}
+
+.admin-shell.sidebar-collapsed {
+    grid-template-columns: 0 minmax(0, 1fr);
+}
+
+.admin-shell.sidebar-collapsed .admin-sidebar {
+    visibility: hidden;
+    padding-right: 0;
+    padding-left: 0;
+    pointer-events: none;
 }
 
 .admin-sidebar .brand {
-    color: #fff;
-    font-size: 20px;
+    width: 150px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.admin-sidebar .brand-logo {
+    width: auto;
+    max-width: 100%;
+    height: 50px;
 }
 
 .admin-sidebar > p {
@@ -123,12 +201,28 @@
     padding: 34px;
 }
 
+.admin-form-panel {
+    max-width: 900px;
+    margin-left: 0;
+}
+
 .admin-topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
     margin-bottom: 26px;
+}
+
+.admin-topbar-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-topbar-actions form {
+    margin: 0;
 }
 
 .admin-topbar .eyebrow {
@@ -197,6 +291,13 @@
 .modal-card .brand {
     display: inline-block;
     margin-bottom: 22px;
+}
+
+.form-card .brand-logo,
+.modal-card .brand-logo {
+    width: auto;
+    max-width: 100%;
+    height: 50px;
 }
 
 .modal-card .eyebrow {
@@ -458,24 +559,50 @@
     }
 
     .admin-shell {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-shell.sidebar-collapsed {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-topbar {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .admin-topbar-actions {
+        margin-left: auto;
     }
 
     .admin-sidebar {
-        position: static;
-        height: auto;
-        padding: 16px;
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        left: 0;
+        width: min(270px, 82vw);
+        height: 100vh;
+        padding: 22px 16px;
+        box-shadow: 12px 0 30px rgba(0, 0, 0, .2);
+        transform: translateX(0);
     }
 
-    .admin-sidebar > p,
-    .sidebar-store {
-        display: none;
+    .admin-shell.sidebar-collapsed .admin-sidebar {
+        visibility: visible;
+        padding-right: 16px;
+        padding-left: 16px;
+        pointer-events: none;
+        transform: translateX(-100%);
+    }
+
+    .admin-shell:not(.sidebar-collapsed) .admin-sidebar {
+        pointer-events: auto;
     }
 
     .admin-sidebar nav {
-        display: flex;
-        overflow-x: auto;
-        margin-top: 12px;
+        display: grid;
+        overflow: visible;
+        margin-top: 0;
     }
 
     .admin-main {

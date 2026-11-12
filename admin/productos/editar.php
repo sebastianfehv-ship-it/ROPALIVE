@@ -76,13 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $producto = array_merge($producto, $datos);
 }
+$adminBasePath = '../../';
+$adminSection = 'productos';
+$adminTitle = 'Editar producto';
+$adminExtraCss = true;
+require __DIR__ . '/../layout_inicio.php';
 ?>
-<!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Editar producto | RopaLive</title><link rel="stylesheet" href="../../assets/css/base.css"><link rel="stylesheet" href="../../assets/css/formularios.css"><link rel="stylesheet" href="../../assets/css/admin.css"></head>
-<body class="modal-page"><main class="modal-card">
-<a class="brand" href="index.php">ROPALIVE</a><p class="eyebrow">Inventario</p><h1 class="page-title">Editar producto</h1>
+<section class="panel admin-form-panel">
 <?php if ($errores) { ?><dialog open class="notice-modal notice-error" role="alert"><p><?php echo h(implode(' ', $errores)); ?></p><form method="dialog"><button class="button-small">Entendido</button></form></dialog><?php } ?>
-<div class="current-images"><?php foreach ($imagenesActuales as $imagen) { ?><img src="<?php echo h(escapar_imagen($imagen)); ?>" alt="Imagen actual de <?php echo h($producto['nombre']); ?>"><?php } ?></div>
+<div class="current-images"><?php foreach ($imagenesActuales as $imagen) { ?><img src="<?php echo h('../../' . escapar_imagen($imagen)); ?>" alt="Imagen actual de <?php echo h($producto['nombre']); ?>"><?php } ?></div>
 <form method="post" enctype="multipart/form-data"><input type="hidden" name="token_csrf" value="<?php echo h(token_csrf()); ?>">
 <div class="form-group"><label for="nombre">Nombre</label><input id="nombre" name="nombre" maxlength="150" value="<?php echo h($producto['nombre']); ?>" required></div>
 <div class="form-group"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion" maxlength="5000"><?php echo h($producto['descripcion'] ?? ''); ?></textarea></div>
@@ -90,4 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="modal-grid"><div class="form-group"><label for="precio">Precio</label><input id="precio" type="number" name="precio" min="0" max="99999999" step="0.01" value="<?php echo h($producto['precio']); ?>" required></div><div class="form-group"><label for="stock">Unidades disponibles</label><input id="stock" type="number" name="stock" min="0" step="1" value="<?php echo h($producto['stock']); ?>" required></div></div>
 <div class="modal-grid"><div class="form-group"><label for="genero">Género</label><select id="genero" name="genero"><option value="unisex" <?php echo $producto['genero'] === 'unisex' ? 'selected' : ''; ?>>Unisex</option><option value="mujer" <?php echo $producto['genero'] === 'mujer' ? 'selected' : ''; ?>>Mujer</option><option value="hombre" <?php echo $producto['genero'] === 'hombre' ? 'selected' : ''; ?>>Hombre</option></select></div><div class="form-group"><label for="coleccion_id">Colección</label><select id="coleccion_id" name="coleccion_id"><option value="">Sin colección</option><?php foreach ($colecciones as $coleccion) { ?><option value="<?php echo (int) $coleccion['id']; ?>" <?php echo (string) $producto['coleccion_id'] === (string) $coleccion['id'] ? 'selected' : ''; ?>><?php echo h($coleccion['nombre']); ?></option><?php } ?></select></div></div>
 <div class="form-group"><label for="imagenes">Reemplazar imágenes (opcional, hasta 3)</label><input id="imagenes" type="file" name="imagenes[]" accept="image/jpeg,image/png,image/webp" multiple></div>
-<div class="modal-actions"><a class="button button-light" href="index.php">Cancelar</a><button type="submit">Guardar cambios</button></div></form></main></body></html>
+<div class="modal-actions"><a class="button button-light" href="index.php">Cancelar</a><button type="submit">Guardar cambios</button></div></form>
+</section>
+<?php require __DIR__ . '/../layout_fin.php'; ?>

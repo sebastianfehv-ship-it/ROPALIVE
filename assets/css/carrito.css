@@ -55,6 +55,30 @@
     background: var(--soft);
 }
 
+.remove-item-form {
+    margin: 0;
+}
+
+.remove-item-button {
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--danger);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.remove-item-button:hover {
+    border-color: var(--danger);
+    background: var(--danger);
+    color: #fff;
+}
+
 .quantity-form {
     display: flex;
     align-items: center;
@@ -79,6 +103,10 @@
 .checkout-form h2 {
     margin: 0 0 14px;
     font-size: 20px;
+}
+
+.checkout-submit {
+    margin-top: 18px;
 }
 
 .checkout-fields {

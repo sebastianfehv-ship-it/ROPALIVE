@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="top-note">ROPA URBANA · NUEVA TEMPORADA</div>
     <main class="form-page">
         <section class="form-card">
-            <a class="brand" href="index.php">ROPALIVE</a>
+            <a class="brand" href="index.php"><img class="brand-logo" src="assets/images/LOGO.png" width="120" height="50" alt="RopaLive"></a>
             <h1 class="page-title">Iniciar sesión</h1>
             <p>Entra a tu cuenta para continuar con tu compra.</p>
             <?php if ($mensaje !== '') { ?>
